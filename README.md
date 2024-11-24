@@ -1,16 +1,9 @@
-# movie_browse
+# Movie Browse
 
-A new Flutter project.
+## Description
+A Flutter application for browsing a list of films, that are popular right now. 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Main Libraries:
+* **http** - sending requests to API
+* **get_it** - dependecy injection
+* **provider** - viewmodel
