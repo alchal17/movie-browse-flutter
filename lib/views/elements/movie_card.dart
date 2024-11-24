@@ -47,6 +47,7 @@ class _MovieCardState extends State<MovieCard>
         child: Stack(
           children: [
             Card(
+              color: Colors.white.withOpacity(0.9),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               elevation: 5,
@@ -58,10 +59,8 @@ class _MovieCardState extends State<MovieCard>
                     child: Hero(
                       tag: "poster-${widget._movie.id}",
                       child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15),
-                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
                         child: Image.network(
                           "https://image.tmdb.org/t/p/w500${widget._movie.posterPath}",
                           fit: BoxFit.cover,
@@ -77,15 +76,15 @@ class _MovieCardState extends State<MovieCard>
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      maxLines: 2,
-                      widget._movie.title,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Text(
+                  //     maxLines: 2,
+                  //     widget._movie.title,
+                  //     textAlign: TextAlign.center,
+                  //     style: const TextStyle(fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
