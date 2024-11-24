@@ -2,7 +2,7 @@
 
 ## Description
 A Flutter application for browsing a list of films, that are popular right now.
-![main_page](./images/main_page.jpg)
+![main_page](./images/main-page.jpg)
 ![details_page](./images/details_page.jpg)
 
 ## Main Libraries:
