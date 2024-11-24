@@ -1,49 +1,43 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:movie_browse/di/injection_container.dart';
-import 'package:movie_browse/services/pagination_service.dart';
-
-import '../../models/movie.dart';
+import 'package:movie_browse/viewmodels/movie_viewmodel.dart';
 import 'movie_card.dart';
 
-class MoviesTable extends StatefulWidget {
+class MoviesTable extends StatelessWidget {
   const MoviesTable({super.key});
 
   @override
-  State<MoviesTable> createState() => _MoviesTableState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => locator<MovieViewmodel>(),
+      child: const _MoviesTableContent(),
+    );
+  }
 }
 
-class _MoviesTableState extends State<MoviesTable> {
-  var _currentPage = 1;
+class _MoviesTableContent extends StatefulWidget {
+  const _MoviesTableContent();
 
-  var _isLoaded = false;
+  @override
+  State<_MoviesTableContent> createState() => _MoviesTableContentState();
+}
 
-  List<Movie> _movies = List.empty();
-
+class _MoviesTableContentState extends State<_MoviesTableContent> {
   final _scrollController = ScrollController();
-
-  _getData() async {
-    _isLoaded = true;
-    final parsedMovies =
-    // await locator<MovieService>().getByPage(_currentPage);
-    await locator<PaginationService>(instanceName: 'movie_service').getByPage(
-        _currentPage);
-    setState(() {
-      _movies = List.from(_movies)
-        ..addAll(parsedMovies ?? List.empty());
-      _currentPage++;
-      _isLoaded = false;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    _getData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MovieViewmodel>(context, listen: false).fetchMovies();
+    });
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200 &&
-          !_isLoaded) {
-        _getData();
+              _scrollController.position.maxScrollExtent - 200 &&
+          !Provider.of<MovieViewmodel>(context, listen: false).isLoading) {
+        Provider.of<MovieViewmodel>(context, listen: false).fetchMovies();
       }
     });
   }
@@ -56,6 +50,8 @@ class _MoviesTableState extends State<MoviesTable> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<MovieViewmodel>(context);
+
     return GridView.builder(
       controller: _scrollController,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -64,9 +60,9 @@ class _MoviesTableState extends State<MoviesTable> {
         mainAxisSpacing: 10,
         childAspectRatio: 0.7,
       ),
-      itemCount: _movies.length,
+      itemCount: viewModel.movies.length,
       itemBuilder: (context, index) {
-        return MovieCard(movie: _movies[index]);
+        return MovieCard(movie: viewModel.movies[index]);
       },
     );
   }
